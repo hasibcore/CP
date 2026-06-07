@@ -40,14 +40,6 @@ Write-Host "Codeforces submission sent!" -ForegroundColor Green
 
 # Step 3: Git add, commit, push to GitHub
 Write-Host "Pushing to GitHub..." -ForegroundColor Yellow
-$problemFolder = $Problem -replace '[A-Z]$'
-$destDir = Join-Path $rootDir $problemFolder
-if (-not (Test-Path $destDir)) {
-    New-Item -ItemType Directory -Path $destDir -Force | Out-Null
-}
-
-$destFile = Join-Path $destDir "$Problem$ext"
-Copy-Item $File $destFile -Force
 
 git -C $rootDir add -A
 $commitMsg = "Solve $Problem"
@@ -57,7 +49,7 @@ git -C $rootDir push 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Pushed to GitHub!" -ForegroundColor Green
 } else {
-    Write-Host "Git push failed. Check GitHub remote setup." -ForegroundColor Red
+    Write-Host "Git push failed. Check: git remote -v" -ForegroundColor Red
 }
 
 Write-Host "Done!" -ForegroundColor Green

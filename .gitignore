@@ -1,0 +1,10 @@
+*.exe
+*.o
+*.obj
+*.class
+*.pyc
+__pycache__
+.vscode/settings.json
+.DS_Store
+*.zip
+*.log

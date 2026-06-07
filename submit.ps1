@@ -29,12 +29,21 @@ if ($ext -eq ".cpp" -or $ext -eq ".c") {
     Write-Host "Compilation OK" -ForegroundColor Green
 }
 
-# Step 2: Submit to Codeforces via cf
+# Step 2: Submit to Codeforces via cf (or Python fallback)
 Write-Host "Submitting $Problem to Codeforces..." -ForegroundColor Yellow
-cf submit $Problem $File
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Codeforces submission failed! Check 'cf config' setup." -ForegroundColor Red
-    exit 1
+$cfOk = $false
+$env:Path += ";C:\Users\Hasan\AppData\Local\Programs\cf"
+cf submit -f $File $Problem 2>&1
+if ($LASTEXITCODE -eq 0) {
+    $cfOk = $true
+} else {
+    Write-Host "cf tool failed. Trying Python fallback..." -ForegroundColor Yellow
+    python "$rootDir\cf_submit.py" $Problem $File 2>&1
+    if ($LASTEXITCODE -eq 0) { $cfOk = $true }
+}
+if (-not $cfOk) {
+    Write-Host "Codeforces submission failed (both methods)." -ForegroundColor Red
+    Write-Host "Manually submit at: https://codeforces.com/contest/$($Problem -replace '[A-Za-z]')/submit" -ForegroundColor Yellow
 }
 Write-Host "Codeforces submission sent!" -ForegroundColor Green
 

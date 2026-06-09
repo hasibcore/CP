@@ -1,0 +1,10 @@
+{
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.preserveFocus": false,
+    "code-runner.clearPreviousOutput": true,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && if exist input.txt (.\\$fileNameWithoutExt < input.txt) else (.\\$fileNameWithoutExt)"
+    }
+}

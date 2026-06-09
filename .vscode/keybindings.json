@@ -1,0 +1,12 @@
+[
+  {
+    "key": "ctrl+alt+s",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Submit to Codeforces + GitHub"
+  },
+  {
+    "key": "ctrl+alt+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Test with Sample Cases"
+  }
+]

@@ -42,16 +42,9 @@ $readmeContent = @"
   <h3>⚡ HOLOGRAPHIC TERMINAL ACTIVE ⚡</h3>
   <p>Competitive Programmer | Software Developer | Dhaka, Bangladesh</p>
   
-  <!-- Live Codeforces Stats Badges (Real-Time API Sync) -->
   <a href="https://codeforces.com/profile/hasibcore" target="_blank">
-    <img src="https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=Codeforces%20Rating&query=%24.result%5B0%5D.rating&url=https%3A%2F%2Fcodeforces.com%2Fapi%2Fuser.info%3Fhandles%3Dhasibcore&color=00d4ff&labelColor=02020f&logo=codeforces&logoColor=00d4ff" alt="CF Rating" />
+    <img src="https://img.shields.io/badge/CODEFORCES-hasibcore-00d4ff?style=for-the-badge&logo=codeforces&logoColor=00d4ff&labelColor=02020f&color=00d4ff" alt="Codeforces" />
   </a>
-  <a href="https://codeforces.com/profile/hasibcore" target="_blank">
-    <img src="https://img.shields.io/badge/dynamic/json?style=for-the-badge&label=CF%20Rank&query=%24.result%5B0%5D.rank&url=https%3A%2F%2Fcodeforces.com%2Fapi%2Fuser.info%3Fhandles%3Dhasibcore&color=ff007f&labelColor=02020f&logo=codeforces&logoColor=ff007f" alt="CF Rank" />
-  </a>
-  
-  <br /><br />
-  
   <a href="https://hasibcore.github.io/CP/hologram-dashboard/" target="_blank">
     <img src="https://img.shields.io/badge/ENTER%20INTERACTIVE%20DASHBOARD-ONLINE-00d4ff?style=for-the-badge&logo=matrix&logoColor=black&labelColor=02020f&color=00d4ff" alt="Enter Dashboard" />
   </a>
@@ -60,15 +53,7 @@ $readmeContent = @"
 <br />
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/hasibcore/CP/main/hologram-dashboard/assets/projector.svg" onerror="this.style.display='none'" width="100%" />
-</div>
-
-<br />
-
-### 📊 3D Contribution Hologram
-
-<div align="center">
-  <img src="https://github-profile-3d-contrib.vercel.app/api?username=hasibcore&theme=radical" width="100%" alt="3D Contribution Graph" />
+  <img src="https://raw.githubusercontent.com/hasibcore/hasibcore/main/assets/projector.svg" onerror="this.style.display='none'" width="100%" />
 </div>
 
 <br />

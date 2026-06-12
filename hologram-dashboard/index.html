@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hasibcore // Hologram Developer Profile</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  
+  <!-- CRT Scanline overlay effect -->
+  <div class="scanlines"></div>
+  <div class="hologram-grid"></div>
+  <div class="scanline-bar"></div>
+  <canvas id="hologram-canvas" class="hologram-canvas"></canvas>
+
+  <!-- Configuration Controls (Floating Panel) -->
+  <div class="config-panel" id="config-panel">
+    <div class="config-toggle" id="config-toggle" title="Configuration Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </div>
+    <div class="config-content">
+      <h3>Hologram Settings</h3>
+      <div class="form-group">
+        <label>GitHub Username</label>
+        <input type="text" id="config-github" value="hasibcore" placeholder="e.g. hasibcore" />
+      </div>
+      <div class="form-group">
+        <label>Codeforces Handle</label>
+        <input type="text" id="config-cf" value="hasibcore" placeholder="e.g. hasibcore" />
+      </div>
+      <div class="form-group">
+        <label>GitHub PAT Token</label>
+        <input type="password" id="config-token" placeholder="Optional - increases rate limits" />
+      </div>
+      <button class="config-btn" id="config-apply">Sync Profile</button>
+      <div class="rate-limit-info" id="rate-limit-info">GitHub API: 60/60 remaining</div>
+    </div>
+  </div>
+
+  <div class="dashboard-container">
+    
+    <!-- LEFT COLUMN: PROFILE CARD -->
+    <aside class="sidebar">
+      
+      <!-- Profile Picture Section -->
+      <div class="profile-avatar-container">
+        <div class="hologram-rings">
+          <div class="ring outer-ring"></div>
+          <div class="ring middle-ring"></div>
+          <div class="ring inner-ring"></div>
+        </div>
+        <div class="avatar-wrapper">
+          <img src="https://github.com/hasibcore.png" id="profile-img" alt="Hasibul Hasan" />
+          <div class="status-pill">
+            <span class="pulse-dot"></span>
+            <span class="status-text">ONLINE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Information -->
+      <div class="user-info">
+        <h1 class="user-name" id="user-name">Hasibul Hasan</h1>
+        <p class="user-username" id="user-username">hasibcore <span class="pronouns">he/him</span></p>
+        
+        <div class="role-badges">
+          <span class="badge badge-purple">Competitive Programmer</span>
+          <span class="badge badge-magenta">Software Developer</span>
+        </div>
+
+        <p class="user-bio" id="user-bio">
+          "Code. Optimize. Innovate."<br/>
+          Building solutions, one algorithm at a time.
+        </p>
+
+        <button class="btn btn-outline btn-full edit-profile-btn" id="edit-profile-side">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Extra Details -->
+      <div class="details-list">
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span class="detail-label">Followers</span>
+          <span class="detail-val" id="sidebar-followers">8</span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          </svg>
+          <span class="detail-label">Following</span>
+          <span class="detail-val" id="sidebar-following">7</span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="detail-label">Location</span>
+          <span class="detail-val" id="sidebar-location">Dhaka, Bangladesh</span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span class="detail-label">Local Time</span>
+          <span class="detail-val" id="sidebar-time">--:-- -- (UTC +06:00)</span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="detail-label">Website</span>
+          <span class="detail-val"><a href="https://godhuli.me" target="_blank" id="sidebar-website">godhuli.me</a></span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+          <span class="detail-label">GitHub</span>
+          <span class="detail-val"><a href="https://github.com/hasibcore" target="_blank" id="sidebar-github">github.com/hasibcore</a></span>
+        </div>
+        <div class="detail-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span class="detail-label">Orcid</span>
+          <span class="detail-val" id="sidebar-orcid">0009-0003-7788-4597</span>
+        </div>
+      </div>
+
+      <!-- Socials -->
+      <div class="socials-container">
+        <p class="socials-title">Connect with me</p>
+        <div class="social-icons">
+          <a href="https://github.com/hasibcore" target="_blank" class="social-icon" title="GitHub" id="social-github">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/hasibul-hasan-229272367?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" class="social-icon" title="LinkedIn" id="social-linkedin">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/hasibcore/" target="_blank" class="social-icon" title="Facebook" id="social-facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <a href="https://x.com/Hasibul1Hasan" target="_blank" class="social-icon" title="Twitter" id="social-twitter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4l11.73 16h4.27L8.27 4z"/>
+              <path d="M20 4L4 20"/>
+            </svg>
+          </a>
+          <a href="https://www.instagram.com/hasibcore/" target="_blank" class="social-icon" title="Instagram" id="social-instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="mailto:hasibcore@gmail.com" class="social-icon" title="Email" id="social-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hologram Projector Visualizer -->
+      <div class="hologram-projector">
+        <div class="projector-base"></div>
+        <div class="projector-beam"></div>
+        <div class="projector-particles" id="projector-particles"></div>
+      </div>
+
+      <!-- Algorithmic Tree Hologram Visualizer -->
+      <div class="panel sidebar-algo-panel" id="sidebar-algo-panel">
+        <div class="panel-header-alt">
+          <span class="panel-title-text">ALGO::BST_SEARCH</span>
+          <span class="panel-status-tag" id="algo-status-tag">TRAVERSING</span>
+        </div>
+        <div class="algo-canvas-wrapper">
+          <canvas id="sidebar-algo-canvas" width="280" height="150"></canvas>
+        </div>
+        <div class="hud-mini-scan">
+          <div class="hud-scan-bar"></div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT COLUMN: MAIN CONTENT -->
+    <main class="main-content">
+      
+      <!-- HEADER BAR -->
+      <header class="content-header">
+        <div class="breadcrumb">
+          <span class="crumb-user" id="header-user">hasibcore</span>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-file">README.md</span>
+        </div>
+        <div class="header-controls">
+          <div class="window-actions">
+            <button class="btn-icon header-btn" title="View Code">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </button>
+            <button class="btn-icon header-btn" title="Toggle Layout">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </button>
+            <button class="btn-icon header-btn" id="theme-toggle" title="Toggle Dark/Light">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" id="moon-icon">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+            <button class="btn-icon header-btn" title="Menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            </button>
+          </div>
+          <button class="btn btn-primary edit-profile-header-btn" id="edit-profile-top">Edit Profile</button>
+        </div>
+      </header>
+
+      <!-- WELCOME HERO AREA -->
+      <section class="panel hero-panel">
+        <div class="hero-left">
+          <div class="greeting-badge">
+            <span class="wave-hand">👋</span> Hello, I'm
+          </div>
+          <h2 class="hero-title">
+            <span id="hero-name">Hasibul Hasan</span> 
+            <span class="hero-username" id="hero-username">(hasibcore)</span>
+          </h2>
+          <p class="hero-desc" id="hero-desc">
+            Welcome to my GitHub profile! I spend most of my time solving algorithmic problems and building cool tools to optimize my workflow.
+          </p>
+          <div class="hero-actions">
+            <a href="https://codeforces.com/profile/hasibcore" target="_blank" class="btn btn-secondary" id="hero-btn-cf">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              CODEFORCES
+            </a>
+            <a href="https://github.com/hasibcore" target="_blank" class="btn btn-outline" id="hero-btn-github">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                <polyline points="2 17 12 22 22 17"/>
+                <polyline points="2 12 12 17 22 12"/>
+              </svg>
+              HASIBCORE
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <!-- Holographic Laptop & Screen Visual -->
+          <div class="hologram-laptop-container">
+            <!-- 3D style Floating Nodes -->
+            <div class="floating-node node-cube" style="--d: 8s; --x: 10%; --y: 20%;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <div class="floating-node node-key" style="--d: 12s; --x: 90%; --y: 30%;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="floating-node node-brackets" style="--d: 10s; --x: 80%; --y: 80%;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+
+            <!-- Laptop Wireframe SVG -->
+            <svg class="hologram-laptop-svg" viewBox="0 0 400 300" fill="none">
+              <defs>
+                <linearGradient id="glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#090c24" stop-opacity="0.2"/>
+                </linearGradient>
+                <filter id="glow-filter" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <!-- Laptop Screen Backboard -->
+              <rect x="70" y="40" width="260" height="160" rx="8" stroke="#00d4ff" stroke-width="1.5" stroke-opacity="0.4" fill="url(#glow-grad)" fill-opacity="0.05" />
+              <!-- Inner screen border -->
+              <rect x="80" y="50" width="240" height="140" rx="4" stroke="#00d4ff" stroke-width="2" filter="url(#glow-filter)" />
+              <!-- Keyboard Base (Perspective Projection) -->
+              <polygon points="40,250 360,250 330,200 70,200" stroke="#00d4ff" stroke-width="2" fill="#02020f" fill-opacity="0.6" filter="url(#glow-filter)" />
+              <!-- Trackpad -->
+              <polygon points="170,245 230,245 225,230 175,230" stroke="#00d4ff" stroke-width="1" stroke-opacity="0.6" />
+              <!-- Base Hinge line -->
+              <line x1="70" y1="200" x2="330" y2="200" stroke="#00d4ff" stroke-width="2" />
+              <!-- Concentric circles behind laptop -->
+              <circle cx="200" cy="150" r="120" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4 8" stroke-opacity="0.3" class="rotating-slow" />
+              <circle cx="200" cy="150" r="140" stroke="#00d4ff" stroke-width="0.5" stroke-opacity="0.15" />
+            </svg>
+
+            <!-- Holographic Screen Text Typing container overlay -->
+            <div class="laptop-screen-content" id="laptop-screen-content">
+              <!-- Rendered dynamically by typewriter JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LANGUAGES AND TOOLS -->
+      <section class="section">
+        <h3 class="section-title-alt">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+          Languages & Tools
+        </h3>
+        <div class="tools-grid" id="tools-grid">
+          <!-- Hexagon Icon 1: C++ -->
+          <div class="tool-card tool-cpp" data-tool="C++" style="--color: #1f8acb">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">C++</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 2: Python -->
+          <div class="tool-card tool-python" data-tool="Python" style="--color: #3776ab">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">Py</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 3: JavaScript -->
+          <div class="tool-card tool-js" data-tool="JavaScript" style="--color: #f7df1e">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">JS</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 4: HTML5 -->
+          <div class="tool-card tool-html" data-tool="HTML5" style="--color: #e34f26">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">H5</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 5: CSS3 -->
+          <div class="tool-card tool-css" data-tool="CSS3" style="--color: #1572b6">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">C3</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 6: Git -->
+          <div class="tool-card tool-git" data-tool="Git" style="--color: #f05032">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">Git</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 7: GitHub -->
+          <div class="tool-card tool-github" data-tool="GitHub" style="--color: #ffffff">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">GH</span>
+            </div>
+          </div>
+          <!-- Hexagon Icon 8: VS Code -->
+          <div class="tool-card tool-vscode" data-tool="VS Code" style="--color: #007acc">
+            <div class="tool-icon-wrapper">
+              <span class="tool-logo-text">VS</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TWO COLUMN WIDGETS -->
+      <div class="grid-2col">
+        
+        <!-- WIDGET A: GITHUB STATS -->
+        <section class="panel stats-panel">
+          <h3 class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            GitHub Stats
+          </h3>
+          <div class="stats-card-content">
+            <div class="stats-text-list">
+              <div class="stat-text-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="c-cyan">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span class="stat-lbl">Total Stars Earned</span>
+                <span class="stat-val" id="stats-stars">0</span>
+              </div>
+              <div class="stat-text-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="c-cyan">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <span class="stat-lbl">Total Commits (last year)</span>
+                <span class="stat-val" id="stats-commits">375</span>
+              </div>
+              <div class="stat-text-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="c-cyan">
+                  <path d="M15 14c-2 0-3 1-3 3v2H6v-2c0-2.2 1.8-4 4-4h5zm-3-4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                </svg>
+                <span class="stat-lbl">Total PRs</span>
+                <span class="stat-val" id="stats-prs">3</span>
+              </div>
+              <div class="stat-text-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="c-cyan">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span class="stat-lbl">Total Issues</span>
+                <span class="stat-val" id="stats-issues">1</span>
+              </div>
+              <div class="stat-text-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="c-cyan">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                </svg>
+                <span class="stat-lbl">Contributed to (last year)</span>
+                <span class="stat-val" id="stats-contributions">1</span>
+              </div>
+            </div>
+            
+            <div class="grade-ring-container">
+              <svg class="grade-ring-svg" viewBox="0 0 100 100">
+                <circle class="ring-bg" cx="50" cy="50" r="40" />
+                <circle class="ring-fg" id="grade-ring-fill" cx="50" cy="50" r="40" style="stroke-dashoffset: 75;" />
+              </svg>
+              <div class="grade-text">
+                <span class="grade-letter" id="grade-letter">C+</span>
+                <span class="grade-sub">Overall Grade</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WIDGET B: ORBIT ACTIVITY -->
+        <section class="panel orbit-panel">
+          <h3 class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+            </svg>
+            Orbit Activity
+          </h3>
+          <div class="orbit-visualizer" id="orbit-visualizer">
+            <!-- Center Node: GitHub logo -->
+            <div class="orbit-center">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </div>
+
+            <!-- Concentric rings -->
+            <div class="orbit-ring orbit-ring-1"></div>
+            <div class="orbit-ring orbit-ring-2"></div>
+            <div class="orbit-ring orbit-ring-3"></div>
+
+            <!-- Orbit Nodes (dynamic elements) -->
+            <!-- Orbit 1 (Inner) -->
+            <div class="orbiting-node node-orbit-1" id="orbit-node-1" style="--rot-dur: 15s; --delay: -2s;">
+              <span class="orbit-label">algorithms</span>
+              <span class="orbit-badge">23 cmt</span>
+            </div>
+            
+            <!-- Orbit 2 (Middle) -->
+            <div class="orbiting-node node-orbit-2a" id="orbit-node-2a" style="--rot-dur: 25s; --delay: -5s;">
+              <span class="orbit-label">web-tools</span>
+              <span class="orbit-badge">12 cmt</span>
+            </div>
+            <div class="orbiting-node node-orbit-2b" id="orbit-node-2b" style="--rot-dur: 25s; --delay: -15s;">
+              <span class="orbit-label">notes</span>
+              <span class="orbit-badge">5 cmt</span>
+            </div>
+
+            <!-- Orbit 3 (Outer) -->
+            <div class="orbiting-node node-orbit-3a" id="orbit-node-3a" style="--rot-dur: 35s; --delay: -8s;">
+              <span class="orbit-label">cp-library</span>
+              <span class="orbit-badge">15 cmt</span>
+            </div>
+            <div class="orbiting-node node-orbit-3b" id="orbit-node-3b" style="--rot-dur: 35s; --delay: -26s;">
+              <span class="orbit-label">awesome-project</span>
+              <span class="orbit-badge">8 cmt</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- FULL WIDTH WIDGETS -->
+      
+      <!-- ACTIVITY OVERVIEW (HEATMAP) -->
+      <section class="panel heatmap-panel">
+        <div class="heatmap-header">
+          <h3 class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+            </svg>
+            Activity Overview
+          </h3>
+          <div class="dropdown-wrapper">
+            <select class="heatmap-select" id="heatmap-data-select">
+              <option value="commits">Contribution Heatmap</option>
+              <option value="codeforces">Codeforces Submissions</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="heatmap-container">
+          <div class="heatmap-months" id="heatmap-months">
+            <!-- Rendered by JS -->
+            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+          </div>
+          <div class="heatmap-grid-wrapper">
+            <div class="heatmap-days-labels">
+              <span>Mon</span><span>Wed</span><span>Fri</span>
+            </div>
+            <div class="heatmap-grid" id="heatmap-cells">
+              <!-- Grid boxes populated dynamically by JS (53 columns x 7 rows) -->
+            </div>
+          </div>
+          <div class="heatmap-legend">
+            <span>Less</span>
+            <span class="legend-box" style="--bg: rgba(6, 10, 36, 0.4)"></span>
+            <span class="legend-box" style="--bg: #0a2d54"></span>
+            <span class="legend-box" style="--bg: #0052a3"></span>
+            <span class="legend-box" style="--bg: #007fff"></span>
+            <span class="legend-box" style="--bg: var(--neon-cyan)"></span>
+            <span>More</span>
+            <span class="total-contribs-label" id="heatmap-summary">Contributions in the last year</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVITY TIMELINE (LIVE) -->
+      <section class="panel timeline-panel">
+        <h3 class="panel-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          Activity Timeline
+          <span class="live-pulse-badge">
+            <span class="pulse-dot-green"></span> Live
+          </span>
+        </h3>
+        
+        <div class="timeline" id="timeline-list">
+          <!-- Populated by JS -->
+          <div class="timeline-item">
+            <div class="timeline-badge timeline-badge-now">Now</div>
+            <div class="timeline-content">
+              <p>Fetching activities...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- METRICS ROW -->
+      <div class="metrics-grid">
+        <div class="metric-card card-contribs">
+          <div class="metric-header">
+            <div class="metric-icon rocket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M4.5 16.5c-1.5 1.26-2 3.43-2 3.43s2.17-.5 3.43-2c1.26-1.5 1.26-3.8-1.43-1.43z"/><path d="M10 14l-5.5-5.5a2 2 0 0 1 0-2.83l3.5-3.5a2 2 0 0 1 2.83 0L16.5 7.5M10 14h5.5a2 2 0 0 0 2.83 0l3.5-3.5a2 2 0 0 0 0-2.83L16.5 2"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="12" y1="12" x2="16" y2="16"/>
+              </svg>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-val" id="metric-total-contribs">397</span>
+              <span class="metric-lbl">Contributions</span>
+            </div>
+          </div>
+          <div class="metric-footer">
+            <span class="trend-up">▲ 12% this month</span>
+          </div>
+        </div>
+
+        <div class="metric-card card-streak">
+          <div class="metric-header">
+            <div class="metric-icon flame-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+              </svg>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-val" id="metric-streak">0</span>
+              <span class="metric-lbl">Current Streak</span>
+            </div>
+          </div>
+          <div class="metric-footer">
+            <span class="trend-neutral">Keep going!</span>
+          </div>
+        </div>
+
+        <div class="metric-card card-repos">
+          <div class="metric-header">
+            <div class="metric-icon trophy-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 0-4 4v7h8V6a4 4 0 0 0-4-4z"/>
+              </svg>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-val" id="metric-repos">8</span>
+              <span class="metric-lbl">Repositories</span>
+            </div>
+          </div>
+          <div class="metric-footer">
+            <span class="trend-up">▲ 2 this month</span>
+          </div>
+        </div>
+
+        <div class="metric-card card-prs">
+          <div class="metric-header">
+            <div class="metric-icon energy-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div class="metric-value-container">
+              <span class="metric-val" id="metric-prs">3</span>
+              <span class="metric-lbl">PRs Merged</span>
+            </div>
+          </div>
+          <div class="metric-footer">
+            <span class="trend-up">▲ 1 this month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM BANNER / QUOTE -->
+      <footer class="bottom-quote-banner">
+        <p class="quote-text" id="bottom-quote">
+          "The best error message is the one that never shows up." — <span class="quote-author">10x Developer</span>
+        </p>
+        <div class="pulse-waveform">
+          <!-- Animated pulse line -->
+          <svg class="waveform-svg" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <path d="M0 10 L40 10 L45 3 L50 17 L55 8 L60 12 L65 10 L100 10" stroke="#00d4ff" stroke-width="2" fill="none" stroke-dasharray="100" stroke-dashoffset="0" class="pulse-wave" />
+          </svg>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>

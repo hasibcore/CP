@@ -2,25 +2,54 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "cppbuild",
-      "label": "C/C++: g++.exe build active file",
-      "command": "C:/msys64/ucrt64/bin/g++.exe",
-      "args": [
-        "-g",
-        "${file}",
-        "-o",
-        "${fileDirname}/${fileBasenameNoExtension}.exe"
-      ],
-      "options": {
-        "cwd": "${fileDirname}"
+      "label": "Git Pull",
+      "type": "shell",
+      "command": "git",
+      "args": ["pull"],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
       },
-      "problemMatcher": [
-        "$gcc"
+      "problemMatcher": []
+    },
+    {
+      "label": "Git Push",
+      "type": "shell",
+      "command": "git",
+      "args": [
+        "add",
+        "."
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "group": "none",
+      "dependsOrder": "sequence",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Git Commit and Push",
+      "type": "shell",
+      "command": "git commit -m \"Update solutions\" ; git push",
+      "group": "none",
+      "dependsOn": "Git Push",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Push to GitHub",
+      "dependsOn": ["Git Push", "Git Commit and Push"],
+      "dependsOrder": "sequence",
+      "group": "none",
+      "problemMatcher": []
     }
   ]
 }

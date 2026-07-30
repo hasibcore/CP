@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/middle-of-the-linked-list/">Middle Of The Linked List</a></h2> <img src='https://img.shields.io/badge/Difficulty-Unknown-red' alt='Difficulty: Unknown' /><hr><p>Given the <code>head</code> of a singly linked list, return <em>the middle node of the linked list</em>.</p>
+<h2><a href="https://leetcode.com/problems/middle-of-the-linked-list/">0</a></h2> <img src='https://img.shields.io/badge/Difficulty-Unknown-red' alt='Difficulty: Unknown' /><hr><p>Given the <code>head</code> of a singly linked list, return <em>the middle node of the linked list</em>.</p>
 
 <p>If there are two middle nodes, return <strong>the second middle</strong> node.</p>
 

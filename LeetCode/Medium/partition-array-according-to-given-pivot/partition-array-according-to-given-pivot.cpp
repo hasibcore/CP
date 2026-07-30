@@ -1,11 +1,10 @@
-        }
-        
-        while (left <= right) {
-            ans[left++] = pivot;
-        }
-        
-        return ans;
-    }
+        }
+        
+        while (left <= right) {
+            ans[left++] = pivot;
+        }
+        
+        return ans;
+    }
 };
-
 
